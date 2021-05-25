@@ -1,5 +1,7 @@
 import json
-from .models import *
+
+from .models import Customer, Order, OrderItem, Product
+
 
 def cookieCart(request):
     try:
@@ -7,7 +9,7 @@ def cookieCart(request):
     except:
         cart = {}
     items = []
-    order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+    order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
     cartItems = order['get_cart_items']
 
     for i in cart:
@@ -21,14 +23,14 @@ def cookieCart(request):
             order['get_cart_items'] += cart[i]["quantity"]
 
             item = {
-                'product':{
-                        'id':product.id,
-                        'name':product.name,
-                        'price':product.price,
-                        'imageURL':product.imageURL,
+                'product': {
+                        'id': product.id,
+                        'name': product.name,
+                        'price': product.price,
+                        'imageURL': product.imageURL,
                     },        
-                 'quantity':cart[i]["quantity"],
-                 'get_total':total
+                 'quantity': cart[i]["quantity"],
+                 'get_total': total
                 }
             items.append(item)
 
@@ -36,7 +38,8 @@ def cookieCart(request):
                 order['shipping'] = True
         except:
             pass
-    return {'items':items, 'order':order, 'cartItems':cartItems}
+    return {'items': items, 'order': order, 'cartItems': cartItems}
+
 
 def cartData(request):
     if request.user.is_authenticated:
@@ -49,7 +52,8 @@ def cartData(request):
         items = cookieData['items']
         order = cookieData['order']
         cartItems = cookieData['cartItems']
-    return {'items':items, 'order':order, 'cartItems':cartItems}
+    return {'items': items, 'order': order, 'cartItems': cartItems}
+
 
 def guestOrder(request, data):
     print('User is not logged in..')

@@ -1,0 +1,5 @@
+db.sqlite3
+*.swp                                                                                                                                                                                                   
+*.pyc                                                                                                                                                                                                   
+__pycache__                                                                                                                                                                                             
+py38.*
