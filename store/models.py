@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().filter(is_active=True)
+
+
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, null=True)
@@ -37,8 +42,11 @@ class Product(models.Model):
     image = models.ImageField(null=True, blank=True)
     slug = models.SlugField(max_length=255)
     in_stock = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
+    products = ProductManager()
 
     class Meta:
         ordering = ('-created',)

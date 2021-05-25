@@ -7,17 +7,15 @@ from .utils import cartData, guestOrder
 
 
 def store(request):
-
     data = cartData(request)
     cartItems = data['cartItems']
 
-    products = Product.objects.all()
+    products = Product.products.all()
     context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)
 
 
 def cart(request):
-
     data = cartData(request)
     items = data['items']
     order = data['order']
@@ -28,7 +26,6 @@ def cart(request):
 
 
 def checkout(request):
-
     data = cartData(request)
     items = data['items']
     order = data['order']
