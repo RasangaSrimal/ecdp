@@ -1,5 +1,24 @@
 db.sqlite3
 *.swp
-*.pyc
-*__pycache__*
 py38.*
+####
+# Django 
+####
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+####
+# Environments
+####
+.venv/
+venv/
+
+####
+# Unit Test & 
+# Coverage Reports
+####
+htmlcov/
+.coverage
+.pytest_cache

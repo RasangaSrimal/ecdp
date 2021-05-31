@@ -61,6 +61,7 @@ function updateUserOrder(productId, action){
 
 	.then((data) => {
 		console.log('data:', data)
+		//document.getElementById('cart-total').innerHTML = data.qty
 		location.reload()
 	})
 }

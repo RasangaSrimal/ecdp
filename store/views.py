@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-import json
 import datetime
-from .models import Category, Product, Order, OrderItem, ShippingAddress
-from .utils import cartData, guestOrder
+import json
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+
+from .models import Category, Order, OrderItem, Product, ShippingAddress
+from .utils import Basket, cartData, guestOrder
 
 
 def store(request):
@@ -36,12 +38,13 @@ def checkout(request):
 
 
 def updateItem(request):
+    basket = Basket(request)
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
 
     customer = request.user.customer
-    product = Product.objects.get(id=productId)
+    product = get_object_or_404(Product, id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
@@ -52,7 +55,10 @@ def updateItem(request):
     orderItem.save()
     if orderItem.quantity <= 0:
         orderItem.delete()
-    return JsonResponse('Item was added', safe=False)
+    product_qty = orderItem.quantity
+    basket.add(product=product, qty=product_qty)
+    basket_qty = basket.__len__()
+    return JsonResponse({'qty': basket_qty})
 
 
 def processOrder(request):
@@ -81,15 +87,19 @@ def processOrder(request):
             state=data['shipping']['state'],
             zipcode=data['shipping']['zipcode'],
         )
-    return JsonResponse('Payment complete!', safe=False)
+    return JsonResponse('Payment complete...!', safe=False)
 
 
 def product_detail(request, slug):
+    data = cartData(request)
+    cartItems = data['cartItems']
     product = get_object_or_404(Product, slug=slug, in_stock=True)
-    return render(request, 'store/products/detail.html', {'product': product})
+    return render(request, 'store/products/detail.html', {'product': product, 'cartItems': cartItems})
 
 
 def category_list(request, category_slug):
+    data = cartData(request)
+    cartItems = data['cartItems']
     category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category)
-    return render(request, 'store/products/category.html', {'category': category, 'products': products})
+    return render(request, 'store/products/category.html', {'category': category, 'products': products, 'cartItems': cartItems})

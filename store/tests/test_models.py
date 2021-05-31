@@ -1,7 +1,8 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 
-from django.contrib.auth.models import User
-from store.models import Customer, Order, OrderItem, ShippingAddress, Category, Product
+from store.models import (Category, Customer, Order, OrderItem, Product,
+                          ShippingAddress)
 
 
 class TestCustomersModel(TestCase):

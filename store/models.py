@@ -1,7 +1,5 @@
+from django.contrib.auth.models import User
 from django.db import models
-
-from django.contrib.auth.models import User 
-
 from django.urls import reverse
 
 
@@ -39,7 +37,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     digital = models.BooleanField(default=False, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, default='default.jpeg')
     slug = models.SlugField(max_length=255)
     in_stock = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
