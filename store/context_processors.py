@@ -1,5 +1,5 @@
 from .models import Category
-from .utils import Basket
+from .utils import Basket, cartData
 
 
 def categories(request):
@@ -8,3 +8,8 @@ def categories(request):
 
 def basket(request):
     return {'basket': Basket(request)}
+
+def cartItems(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    return {'cart_items': cartItems}

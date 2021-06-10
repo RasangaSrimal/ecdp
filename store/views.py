@@ -9,11 +9,8 @@ from .utils import Basket, cartData, guestOrder
 
 
 def store(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
-
     products = Product.products.all()
-    context = {'products': products, 'cartItems': cartItems}
+    context = {'products': products}
     return render(request, 'store/store.html', context)
 
 
@@ -21,9 +18,8 @@ def cart(request):
     data = cartData(request)
     items = data['items']
     order = data['order']
-    cartItems = data['cartItems']
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    context = {'items': items, 'order': order}
     return render(request, 'store/cart.html', context)
 
 
@@ -31,9 +27,8 @@ def checkout(request):
     data = cartData(request)
     items = data['items']
     order = data['order']
-    cartItems = data['cartItems']
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    context = {'items': items, 'order': order}
     return render(request, 'store/checkout.html', context)
 
 
@@ -91,15 +86,11 @@ def processOrder(request):
 
 
 def product_detail(request, slug):
-    data = cartData(request)
-    cartItems = data['cartItems']
     product = get_object_or_404(Product, slug=slug, in_stock=True)
-    return render(request, 'store/products/detail.html', {'product': product, 'cartItems': cartItems})
+    return render(request, 'store/products/detail.html', {'product': product})
 
 
 def category_list(request, category_slug):
-    data = cartData(request)
-    cartItems = data['cartItems']
     category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category)
-    return render(request, 'store/products/category.html', {'category': category, 'products': products, 'cartItems': cartItems})
+    return render(request, 'store/products/category.html', {'category': category, 'products': products})
