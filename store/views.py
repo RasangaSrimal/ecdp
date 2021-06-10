@@ -52,8 +52,7 @@ def updateItem(request):
         orderItem.delete()
     product_qty = orderItem.quantity
     basket.add(product=product, qty=product_qty)
-    basket_qty = basket.__len__()
-    return JsonResponse({'qty': basket_qty})
+    return JsonResponse('Item was added', safe=False)
 
 
 def processOrder(request):
@@ -94,3 +93,4 @@ def category_list(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category)
     return render(request, 'store/products/category.html', {'category': category, 'products': products})
+

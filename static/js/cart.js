@@ -61,7 +61,17 @@ function updateUserOrder(productId, action){
 
 	.then((data) => {
 		console.log('data:', data)
-		//document.getElementById('cart-total').innerHTML = data.qty
 		location.reload()
 	})
 }
+
+document.getElementById('btn-checkout').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "flex";
+	$('body').css('overflow','hidden')
+});
+
+document.querySelector('.close-popup').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "none";
+	$('body').css('overflow','auto')
+
+});
